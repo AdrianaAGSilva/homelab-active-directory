@@ -28,6 +28,19 @@ Simular, do zero, um ambiente de infraestrutura corporativa real utilizando **Wi
 - Instalação do **Windows 11 Enterprise** na máquina cliente
 - **Ingresso do cliente no domínio** `adriana.local`
 - Login validado com credenciais de domínio (`ADRIANA\joao.silva`)
+- Criação e aplicação de **Diretiva de Grupo (GPO)** — `GPO_Bloqueio_Tela` — vinculada à OU Suporte, forçando bloqueio automático de tela após período de inatividade, com senha obrigatória para desbloqueio
+- Validação da GPO através de `gpupdate /force` e teste prático do bloqueio de tela no cliente
+
+## 🔒 Diretiva de Grupo (GPO) aplicada
+
+Como demonstração de gestão de políticas corporativas, foi criada e vinculada à OU **Suporte** uma GPO chamada **`GPO_Bloqueio_Tela`**, configurada em:
+
+`Computer Configuration > Policies > Administrative Templates > Control Panel > Personalization`
+
+- **Screen saver timeout:** habilitado, 300 segundos (5 minutos)
+- **Password protect the screen saver:** habilitado
+
+A política foi validada aplicando `gpupdate /force` no cliente e confirmando, na prática, que a tela bloqueia automaticamente após o tempo configurado, exigindo a senha do usuário de domínio para desbloquear.
 
 ## 📸 Screenshots
 
@@ -40,6 +53,8 @@ Simular, do zero, um ambiente de infraestrutura corporativa real utilizando **Wi
 | Usuários e grupo de segurança criados | `screenshots/03-usuarios-grupos.png` |
 | Cliente ingressado no domínio | `screenshots/04-cliente-no-dominio.png` |
 | Login com usuário de domínio | `screenshots/05-login-dominio.png` |
+| GPO criada e vinculada à OU Suporte | `screenshots/06-gpo-criada.png` |
+| Tela bloqueada automaticamente (GPO em ação) | `screenshots/07-gpo-funcionando.png` |
 
 ## 🧩 Desafios e aprendizados
 
@@ -49,6 +64,7 @@ Documentar os perrengues faz parte do processo — foram eles que geraram o apre
 - **Limitações de hardware do host:** rodar duas VMs simultaneamente em uma máquina com 8GB de RAM causou travamentos recorrentes — foi necessário migrar os arquivos das VMs (`.vbox`/`.vdi`) para um computador com mais recursos, através de exportação/importação no VirtualBox.
 - **Rede "Pública" bloqueando o domínio:** o cliente não conseguia localizar o domínio via DNS porque o Windows classificava a rede interna como "Rede Pública" — o Firewall bloqueava as portas necessárias até a rede ser reclassificada como "Privada".
 - **Diagnóstico de conectividade:** uso de `ping` e `nslookup` para isolar o problema entre falha de rede básica vs. falha específica de DNS antes de conseguir ingressar o cliente no domínio com sucesso.
+- **Perfil de rede "Pública" bloqueando o AD:** mesmo após a rede interna estar corretamente configurada, o Windows classificava a conexão como "Rede Pública", fazendo o Firewall bloquear portas essenciais do Active Directory — resolvido reclassificando a conexão como "Rede Privada".
 
 ## 🛠️ Tecnologias utilizadas
 
@@ -61,7 +77,7 @@ Documentar os perrengues faz parte do processo — foram eles que geraram o apre
 
 ## 🚀 Próximos passos
 
-- [ ] Aplicar Diretiva de Grupo (GPO) de bloqueio de tela na OU Suporte
 - [ ] Adicionar servidor DHCP
 - [ ] Configurar compartilhamento de arquivos entre servidor e cliente
-- [ ] Implementar políticas de senha mais robustas
+- [ ] Implementar políticas de senha mais robustas (complexidade, expiração, histórico)
+- [ ] Adicionar um segundo Domain Controller para redundância
