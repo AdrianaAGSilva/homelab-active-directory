@@ -1,10 +1,10 @@
-# 🖥️ Homelab de Active Directory — Ambiente Corporativo Simulado
+#  Homelab de Active Directory — Ambiente Corporativo Simulado
 
-## 🎯 Objetivo do projeto
+##  Objetivo do projeto
 
 Simular, do zero, um ambiente de infraestrutura corporativa real utilizando **Windows Server** (Domain Controller) e **Windows 11** (cliente ingressado no domínio), reproduzindo tarefas do dia a dia de um analista de suporte/infraestrutura: gestão de usuários, grupos, políticas de segurança e resolução de problemas de rede.
 
-## 🏗️ Arquitetura
+##  Arquitetura
 
 ```
 ┌─────────────────────────┐         ┌─────────────────────────┐
@@ -17,7 +17,7 @@ Simular, do zero, um ambiente de infraestrutura corporativa real utilizando **Wi
         Virtualizado com Oracle VirtualBox
 ```
 
-## ✅ O que foi implementado
+##  O que foi implementado
 
 - Instalação e configuração do **Windows Server 2022** como Controlador de Domínio (Active Directory Domain Services + DNS Server)
 - Criação do domínio **`adriana.local`**
@@ -31,7 +31,7 @@ Simular, do zero, um ambiente de infraestrutura corporativa real utilizando **Wi
 - Criação e aplicação de **Diretiva de Grupo (GPO)** — `GPO_Bloqueio_Tela` — vinculada à OU Suporte, forçando bloqueio automático de tela após período de inatividade, com senha obrigatória para desbloqueio
 - Validação da GPO através de `gpupdate /force` e teste prático do bloqueio de tela no cliente
 
-## 🔒 Diretiva de Grupo (GPO) aplicada
+##  Diretiva de Grupo (GPO) aplicada
 
 Como demonstração de gestão de políticas corporativas, foi criada e vinculada à OU **Suporte** uma GPO chamada **`GPO_Bloqueio_Tela`**, configurada em:
 
@@ -42,9 +42,8 @@ Como demonstração de gestão de políticas corporativas, foi criada e vinculad
 
 A política foi validada aplicando `gpupdate /force` no cliente e confirmando, na prática, que a tela bloqueia automaticamente após o tempo configurado, exigindo a senha do usuário de domínio para desbloquear.
 
-## 📸 Screenshots
+##  Screenshots
 
-> *Prints de cada etapa serão adicionados aqui em breve.*
 
 | Etapa | Screenshot |
 |---|---|
@@ -56,7 +55,7 @@ A política foi validada aplicando `gpupdate /force` no cliente e confirmando, n
 | GPO criada e vinculada à OU Suporte | `screenshots/06-gpo-criada.png` |
 | Tela bloqueada automaticamente (GPO em ação) | `screenshots/07-gpo-funcionando.png` |
 
-## 🧩 Desafios e aprendizados
+##  Desafios e aprendizados
 
 Documentar os perrengues faz parte do processo — foram eles que geraram o aprendizado mais real:
 
@@ -66,7 +65,7 @@ Documentar os perrengues faz parte do processo — foram eles que geraram o apre
 - **Diagnóstico de conectividade:** uso de `ping` e `nslookup` para isolar o problema entre falha de rede básica vs. falha específica de DNS antes de conseguir ingressar o cliente no domínio com sucesso.
 - **Perfil de rede "Pública" bloqueando o AD:** mesmo após a rede interna estar corretamente configurada, o Windows classificava a conexão como "Rede Pública", fazendo o Firewall bloquear portas essenciais do Active Directory — resolvido reclassificando a conexão como "Rede Privada".
 
-## 🛠️ Tecnologias utilizadas
+##  Tecnologias utilizadas
 
 - Windows Server 2022 (Standard, Desktop Experience)
 - Windows 11 Enterprise (Evaluation)
