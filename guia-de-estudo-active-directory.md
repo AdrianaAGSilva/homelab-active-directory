@@ -1,4 +1,4 @@
-# 📚 Guia de Estudo — Active Directory (baseado no seu projeto homelab)
+# Guia de Estudo — Active Directory
 
 Este guia resume os conceitos que você já colocou em prática no seu homelab. Use como material de revisão antes de entrevistas ou para relembrar o "porquê" por trás de cada passo.
 
@@ -161,7 +161,7 @@ Imagine uma empresa com 500 computadores. Sem GPO, aplicar uma nova regra de seg
 
 ---
 
-## 7. Perguntas para se testar (revisão ativa)
+## 7. Revisão ativa
 
 1. Qual a diferença entre um Domain Controller e um computador cliente ingressado no domínio?
 2. Por que o DNS é essencial para o Active Directory funcionar?
@@ -176,11 +176,3 @@ Imagine uma empresa com 500 computadores. Sem GPO, aplicar uma nova regra de seg
 11. Por que o comando `gpupdate /force` é útil durante testes, mesmo sabendo que o Windows já reaplica GPOs automaticamente?
 
 ---
-
-## 8. Próximos tópicos para aprofundar (se quiser continuar evoluindo)
-
-- DHCP (atribuição automática de IPs)
-- Compartilhamento de arquivos e permissões NTFS
-- Políticas de senha (complexidade, expiração, histórico)
-- Múltiplos Domain Controllers e replicação
-- Grupos aninhados e escopos (Domain Local, Global, Universal)
