@@ -1,78 +1,77 @@
-# 📚 Guia de Estudo — Active Directory (baseado no seu projeto homelab)
+# 📚 Minhas Anotações — Active Directory (projeto homelab)
 
-Este guia resume os conceitos que você já colocou em prática no seu homelab. Use como material de revisão antes de entrevistas ou para relembrar o "porquê" por trás de cada passo.
+Anotações que fiz enquanto montava meu próprio ambiente de Active Directory do zero. Vou usar isso pra revisar antes de entrevistas ou sempre que precisar relembrar algum conceito.
 
 ---
 
-## 1. Conceitos fundamentais
+## 1. Conceitos fundamentais que aprendi
 
-### O que é Active Directory (AD)?
-Serviço da Microsoft que centraliza o gerenciamento de usuários, computadores, permissões e políticas de segurança de uma rede corporativa — o "cérebro" que controla quem pode acessar o quê.
+### O que é Active Directory (AD)
+É o serviço da Microsoft que centraliza o gerenciamento de usuários, computadores, permissões e políticas de segurança de uma rede corporativa. É o "cérebro" que controla quem pode acessar o quê.
 
 ### Domain Controller (DC)
-O servidor que hospeda o Active Directory. É ele quem autentica logins, aplica políticas e mantém o banco de dados central do domínio. No seu projeto: **DC01-Servidor**.
+É o servidor que hospeda o Active Directory. Ele autentica logins, aplica políticas e mantém o banco de dados central do domínio. No meu projeto: **DC01-Servidor**.
 
 ### Domínio
-O "nome" da rede administrada pelo AD (ex: `adriana.local`). Todo usuário, computador e grupo pertence a um domínio.
+É o "nome" da rede administrada pelo AD (no meu caso, `adriana.local`). Todo usuário, computador e grupo que criei pertence a esse domínio.
 
 ### DNS (Domain Name System)
-Serviço que "traduz" nomes (como `adriana.local`) para endereços IP. O Active Directory **depende** do DNS para funcionar — é assim que um computador cliente "encontra" o servidor do domínio.
+Serviço que "traduz" nomes (como `adriana.local`) para endereços IP. Aprendi na prática que o Active Directory **depende** do DNS pra funcionar — foi exatamente isso que travou meu cliente na hora de entrar no domínio, até eu configurar o DNS certo.
 
 ---
 
-## 2. Estrutura organizacional
+## 2. Estrutura organizacional que criei
 
 ### OU (Organizational Unit)
-Uma "pasta" dentro do domínio usada para organizar usuários, computadores e grupos por departamento, função ou localização. Permite aplicar regras (GPOs) e delegar permissões por grupo, em vez de configurar item por item.
-> No projeto: OUs **TI**, **RH**, **Financeiro**, **Suporte**.
+É uma "pasta" dentro do domínio que uso pra organizar usuários, computadores e grupos por departamento, função ou localização. Permite aplicar regras (GPOs) e delegar permissões por grupo, em vez de configurar item por item.
+> No meu projeto: criei as OUs **TI**, **RH**, **Financeiro**, **Suporte**.
 
 ### Usuários
-Contas individuais dentro de uma OU, representando pessoas (funcionários fictícios, no seu caso: João Silva, Maria Souza, Pedro Santos).
+São contas individuais dentro de uma OU, representando pessoas. Criei os usuários fictícios: João Silva, Maria Souza, Pedro Santos.
 
 ### Grupos de segurança
-Reúnem vários usuários para aplicar permissões ou políticas de uma vez só, em vez de configurar cada usuário separadamente.
-> No projeto: `GG_Suporte_TI` — o prefixo "GG" indica "Global Group", uma convenção de nomenclatura comum em ambientes profissionais.
+Servem pra reunir vários usuários e aplicar permissões ou políticas de uma vez só, em vez de configurar cada usuário separadamente.
+> Criei o grupo `GG_Suporte_TI` — o prefixo "GG" indica "Global Group", uma convenção de nomenclatura que aprendi ser comum em ambientes profissionais.
 
 ---
 
-## 3. Rede: pré-requisito para tudo funcionar
+## 3. Rede: o que precisei acertar pra tudo funcionar
 
-| Conceito | O que é | No seu projeto |
+| Conceito | O que é | Como configurei |
 |---|---|---|
-| IP fixo | Endereço que não muda, essencial para o servidor ser sempre "encontrado" no mesmo lugar | `192.168.56.10` (servidor), `192.168.56.20` (cliente) |
+| IP fixo | Endereço que não muda, essencial pro servidor ser sempre encontrado no mesmo lugar | `192.168.56.10` (servidor), `192.168.56.20` (cliente) |
 | Máscara de sub-rede | Define o "tamanho" da rede local | `255.255.255.0` |
-| DNS do cliente apontando pro servidor | Sem isso, o cliente não consegue localizar o domínio | Cliente configurado com DNS `192.168.56.10` |
-| Perfil de rede (Pública x Privada) | O Windows aplica regras de Firewall diferentes conforme o perfil | Precisou mudar de "Pública" para "Privada" para liberar as portas do AD |
+| DNS do cliente apontando pro servidor | Sem isso, o cliente não localiza o domínio | Configurei o DNS do cliente como `192.168.56.10` |
+| Perfil de rede (Pública x Privada) | O Windows aplica regras de Firewall diferentes conforme o perfil | Precisei mudar de "Pública" pra "Privada" pra liberar as portas do AD — foi um dos perrengues que resolvi |
 
-**Ferramentas de diagnóstico que você usou:**
-- `ping <IP>` — testa se dois computadores conseguem se comunicar na rede.
-- `nslookup <domínio>` — testa se a resolução de nomes (DNS) está funcionando.
-- `ipconfig` — mostra a configuração de rede atual de uma máquina.
-- `gpupdate /force` — força a aplicação imediata de políticas de grupo, sem esperar o ciclo automático.
+**Ferramentas de diagnóstico que usei de verdade:**
+- `ping <IP>` — testei se as duas VMs conseguiam se comunicar na rede.
+- `nslookup <domínio>` — testei se a resolução de nomes (DNS) estava funcionando.
+- `ipconfig` — conferi a configuração de rede de cada máquina.
+- `gpupdate /force` — forcei a aplicação imediata da política de grupo, sem esperar o ciclo automático.
 
 ---
 
-## 3.5. Windows Server vs. Windows 11 — comparação em profundidade
+## 3.5. Windows Server vs. Windows 11 — o que percebi na prática
 
-Entender essa diferença a fundo é importante porque mostra que você compreende **papéis distintos** dentro de uma infraestrutura, não só "dois tipos de Windows".
+Isso ficou bem mais claro depois que eu configurei os dois na mão.
 
 ### Propósito de design
 
 | Aspecto | Windows Server | Windows 11 |
 |---|---|---|
 | Público-alvo | Administradores de TI, gerenciando a rede | Usuários finais, no dia a dia |
-| Uso típico | Rodar serviços 24/7 em segundo plano (AD, DNS, DHCP, arquivos, e-mail) | Produtividade pessoal: navegar, editar documentos, jogos |
-| Interface | Pode rodar **sem interface gráfica** (Server Core) — só linha de comando | Sempre com interface gráfica completa |
-| Ciclo de reinício | Projetado para ficar ligado por longos períodos, com o mínimo de reinicializações | Reinicia com frequência normal (atualizações, uso do dia a dia) |
+| Uso típico | Rodar serviços 24/7 em segundo plano (AD, DNS, DHCP, arquivos) | Produtividade pessoal |
+| Interface | Pode rodar sem interface gráfica (Server Core) | Sempre com interface gráfica completa |
+| Ciclo de reinício | Projetado pra ficar ligado por longos períodos | Reinicia com frequência normal |
 
-### Diferenças técnicas relevantes
+### Diferenças técnicas que vivenciei
 
-- **Funções (Roles) e Recursos (Features):** só o Windows Server tem o conceito de "Adicionar Funções e Recursos" (Add Roles and Features) — é dali que instalamos o AD DS e o DNS Server. O Windows 11 não tem esse papel de "servidor de infraestrutura".
+- **Funções (Roles) e Recursos (Features):** só o Windows Server tem esse conceito de "Adicionar Funções e Recursos" — foi de lá que instalei o AD DS e o DNS Server. O Windows 11 não tem esse papel de servidor de infraestrutura.
+- **Requisito de hardware — o detalhe que mais me chamou atenção:** o Windows Server 2022 rodou de boa com **2GB de RAM** no meu lab, enquanto o Windows 11 **exigiu no mínimo 4GB** — e ainda travou até eu ajustar TPM 2.0, EFI e Secure Boot na VM. Isso mostrou na prática que o Server é otimizado pra rodar serviços leves em segundo plano, enquanto o Windows 11 carrega uma camada de interface e recursos pro usuário muito mais pesada.
 - **Licenciamento:** Windows Server é licenciado por núcleos de processador/usuários que acessam (CALs), diferente do modelo de licença única do Windows 11.
-- **Requisitos de hardware:** curiosamente, o Windows Server 2022 rodou bem com **2GB de RAM** no seu lab, enquanto o Windows 11 **exige no mínimo 4GB** — porque o Server é otimizado para rodar serviços leves em segundo plano, enquanto o Windows 11 carrega uma camada de interface e recursos para o usuário muito mais pesada (TPM 2.0, Secure Boot, Windows Hello, etc. — tudo isso você viu na prática ao configurar a VM CLI01).
-- **Atualizações e suporte:** Windows Server tem ciclos de suporte muito mais longos (geralmente 10 anos) comparado ao Windows 11 (ciclos mais curtos por versão).
 
-### Na prática, no seu projeto
+### Como ficou meu ambiente
 
 ```
 DC01 (Windows Server)          CLI01 (Windows 11)
@@ -84,100 +83,93 @@ DC01 (Windows Server)          CLI01 (Windows 11)
      └──────────── rede interna ──────┘
 ```
 
-O Windows Server **não é "melhor"** que o Windows 11 de forma genérica — são ferramentas com propósitos diferentes. Um recrutador vai valorizar que você entende **quando usar cada um**, não que um é superior ao outro.
+Entendi que o Windows Server não é "melhor" que o Windows 11 de forma genérica — são ferramentas com propósitos diferentes. O importante é saber quando usar cada um.
 
 ---
 
-## 4. Ingresso de um cliente no domínio
+## 4. Como ingressei o cliente no domínio
 
-Quando um computador "entra" no domínio (via `sysdm.cpl` → Change → Domain), ele passa a:
-- Aceitar login com credenciais do Active Directory (ex: `ADRIANA\joao.silva`) em vez de só contas locais.
-- Poder receber políticas de grupo (GPOs) definidas pelo administrador do domínio.
+Quando um computador "entra" no domínio (fiz isso via `sysdm.cpl` → Change → Domain), ele passa a:
+- Aceitar login com credenciais do Active Directory (usei `ADRIANA\joao.silva`) em vez de só contas locais.
+- Poder receber políticas de grupo (GPOs) definidas no servidor.
 - Ficar sujeito às regras de segurança centralizadas da "empresa".
 
-**Requisito técnico:** o cliente precisa conseguir resolver o domínio via DNS — por isso a configuração de rede (IP fixo + DNS apontando pro servidor) é sempre o primeiro ponto a verificar quando o ingresso falha.
+**O que aprendi sobre o requisito técnico:** o cliente precisa conseguir resolver o domínio via DNS — por isso a configuração de rede (IP fixo + DNS apontando pro servidor) é sempre o primeiro ponto que vou verificar se o ingresso falhar de novo no futuro.
 
 ---
 
-## 5. GPO (Group Policy Object) — Diretiva de Grupo, em profundidade
+## 5. GPO (Group Policy Object) — o que entendi a fundo
 
-### O que é, de fato
+### O que é, no fim das contas
 
-Uma GPO é um **conjunto de configurações** que o Active Directory aplica automaticamente a usuários e/ou computadores, sem que ninguém precise ir máquina por máquina configurando manualmente. É a ferramenta que permite a um administrador dizer, por exemplo: "todo computador da OU Suporte deve bloquear a tela depois de 5 minutos" — e isso se propaga sozinho para todas as máquinas daquela OU.
+É um conjunto de configurações que o Active Directory aplica automaticamente a usuários e/ou computadores, sem que eu precise ir máquina por máquina configurando manualmente. Consegui dizer, por exemplo: "todo computador da OU Suporte deve bloquear a tela depois de 5 minutos" — e isso se propagou sozinho.
 
-Pense nela como uma **regra centralizada** que "desce" do servidor para as máquinas, em vez de alguém precisar configurar cada computador individualmente — essa é literalmente a diferença entre gerenciar 3 computadores manualmente e gerenciar 3.000 automaticamente.
+Entendi que é uma regra centralizada que "desce" do servidor pra máquina, em vez de eu precisar configurar cada computador individualmente — essa é a diferença entre gerenciar 3 computadores manualmente e gerenciar 3.000 automaticamente.
 
 ### As duas metades de toda GPO
 
-Toda GPO é dividida em duas grandes seções, e é importante saber quando usar cada uma:
-
-| Seção | Quando se aplica | Exemplo |
+| Seção | Quando se aplica | Exemplo que usei |
 |---|---|---|
-| **Computer Configuration** | Aplicada ao **computador**, independente de quem faça login nele | Configurações de firewall, serviços do Windows, tela de bloqueio (como no seu projeto) |
-| **User Configuration** | Aplicada ao **usuário**, e o "segue" para qualquer computador do domínio em que ele logar | Papel de parede padrão, unidades de rede mapeadas, restrições de menu Iniciar |
+| **Computer Configuration** | Aplicada ao computador, não importa quem faça login | Foi essa que usei pra tela de bloqueio |
+| **User Configuration** | Aplicada ao usuário, e "segue" ele pra qualquer computador do domínio | Não usei essa dessa vez, mas serviria pra ex: mapear unidade de rede |
 
-No seu projeto, você usou **Computer Configuration** para o bloqueio de tela — por isso a regra vale para qualquer usuário que logar naquele computador específico da OU Suporte.
+Usei **Computer Configuration** pro bloqueio de tela — por isso a regra vale pra qualquer usuário que logar naquele computador específico da OU Suporte.
 
-### Onde as GPOs "moram" dentro do AD
+### Onde a minha GPO ficou dentro do AD
 
 ```
 Domínio (adriana.local)
    └── OU (Suporte)
          └── GPO vinculada (GPO_Bloqueio_Tela)
-               ├── Computer Configuration
-               │     └── Policies → Administrative Templates
-               │           └── Control Panel → Personalization
-               │                 ├── Screen saver timeout
-               │                 └── Password protect the screen saver
-               └── User Configuration (não usada nesse caso)
+               └── Computer Configuration
+                     └── Policies → Administrative Templates
+                           └── Control Panel → Personalization
+                                 ├── Screen saver timeout
+                                 └── Password protect the screen saver
 ```
 
-### Herança de GPOs (um conceito que costuma cair em entrevista)
+### Herança de GPOs (conceito importante pra entrevista)
 
-GPOs seguem uma **hierarquia de herança**: uma GPO vinculada no nível do domínio afeta *todas* as OUs abaixo dele; uma GPO vinculada numa OU específica afeta só aquela OU (e subpastas dela, se houver). Se houver conflito entre regras, a mais "próxima" da OU final geralmente prevalece (a não ser que a GPO de nível superior esteja marcada como "Enforced").
-
-No seu projeto: se você tivesse criado a GPO no nível do domínio inteiro, ela afetaria também TI, RH e Financeiro — por isso ela foi vinculada especificamente na OU **Suporte**, para restringir o efeito só ao departamento desejado.
+Aprendi que GPOs seguem uma hierarquia: uma GPO vinculada no domínio inteiro afeta *todas* as OUs abaixo; uma GPO vinculada numa OU específica afeta só ela. Por isso vinculei minha GPO especificamente na OU **Suporte** — se eu tivesse feito no domínio inteiro, teria afetado TI, RH e Financeiro também, o que não era a intenção.
 
 ### Como a aplicação acontece na prática
 
-1. Por padrão, o Windows verifica e reaplica GPOs automaticamente a cada **90 minutos** (com uma variação aleatória de até 30 min para evitar que todos os PCs consultem o servidor ao mesmo tempo).
-2. O comando `gpupdate /force` (que você usou) **pula essa espera** e força a verificação imediatamente — extremamente útil para testar se uma GPO nova está funcionando sem precisar esperar quase 2 horas.
-3. Algumas configurações (como as de segurança) só entram em vigor completamente após um **reinício** do computador ou **logoff/login** do usuário — foi por isso que reiniciamos o cliente depois do `gpupdate /force`.
+1. Por padrão, o Windows reaplica GPOs a cada **90 minutos** (com uma variação aleatória de até 30 min).
+2. Usei `gpupdate /force` pra pular essa espera e testar na hora, sem precisar esperar quase 2 horas.
+3. Aprendi que algumas configurações só entram em vigor completamente depois de um reinício ou logoff/login — por isso reiniciei o cliente depois do `gpupdate /force`.
 
-### Por que isso importa numa empresa real
+### Por que isso importa numa empresa de verdade
 
-Imagine uma empresa com 500 computadores. Sem GPO, aplicar uma nova regra de segurança (ex: "toda tela deve bloquear em 5 minutos por questões de compliance") exigiria visitar computador por computador. Com GPO, o administrador configura **uma vez**, no servidor, e a regra se propaga sozinha para todas as máquinas certas — é exatamente esse tipo de automação/centralização que você demonstrou saber fazer no seu projeto.
-
-> No projeto: `GPO_Bloqueio_Tela`, vinculada à OU Suporte, forçando bloqueio automático de tela após 5 minutos de inatividade — simulando uma política de segurança corporativa real, validada com sucesso através de `gpupdate /force` e teste prático de bloqueio.
+Imaginando uma empresa com 500 computadores: sem GPO, aplicar uma regra nova (tipo "toda tela bloqueia em 5 min por compliance") exigiria visitar computador por computador. Com GPO, configuro uma vez no servidor e a regra se propaga sozinha. Foi exatamente esse tipo de automação que consegui demonstrar no meu projeto.
 
 ---
 
-## 6. Boas práticas percebidas no projeto
+## 6. Boas práticas que percebi no caminho
 
-- **Nomenclatura padronizada** (ex: `GG_Suporte_TI`) facilita a administração em ambientes com muitos grupos/usuários.
-- **Testar com `ping`/`nslookup` antes de assumir que o problema é complexo** — grande parte dos erros de "não consigo ingressar no domínio" são, na raiz, problemas simples de rede/DNS.
-- **Perfil de rede "Privada" é necessário** sempre que se espera que o Firewall do Windows libere serviços internos como AD e compartilhamento de arquivos.
-- **RAM é um fator crítico** ao virtualizar múltiplos servidores — Windows Server e Windows 11 têm requisitos mínimos diferentes, e rodar VMs além da capacidade do hardware causa instabilidade.
+- Nomenclatura padronizada (tipo `GG_Suporte_TI`) facilita bastante a administração quando tem muitos grupos/usuários.
+- Testar com `ping`/`nslookup` antes de assumir que o problema é complexo — a maioria dos meus erros de "não consigo ingressar no domínio" eram, na raiz, problemas simples de rede/DNS.
+- Perfil de rede "Privada" é necessário sempre que espero que o Firewall do Windows libere serviços internos como AD e compartilhamento de arquivos.
+- RAM é um fator crítico quando estou virtualizando múltiplos servidores — descobri isso na prática quando meu PC travou rodando as duas VMs juntas com só 8GB de RAM.
 
 ---
 
-## 7. Perguntas para se testar (revisão ativa)
+## 7. Perguntas que fiz pra mim mesma (revisão ativa)
 
 1. Qual a diferença entre um Domain Controller e um computador cliente ingressado no domínio?
-2. Por que o DNS é essencial para o Active Directory funcionar?
-3. O que aconteceria se você criasse um usuário fora de qualquer OU?
-4. Para que serve um Grupo de Segurança, e por que não aplicar permissões usuário por usuário?
-5. Se um cliente não consegue ingressar no domínio, quais os 3 primeiros comandos que você rodaria para diagnosticar?
+2. Por que o DNS é essencial pro Active Directory funcionar?
+3. O que aconteceria se eu criasse um usuário fora de qualquer OU?
+4. Pra que serve um Grupo de Segurança, e por que não aplicar permissões usuário por usuário?
+5. Se um cliente não consegue ingressar no domínio, quais os 3 primeiros comandos que eu rodaria pra diagnosticar?
 6. O que é uma GPO e onde ela é configurada?
 7. Por que a "Rede Pública" no Windows pode impedir a comunicação com o Active Directory?
-8. Por que o Windows Server consegue rodar com menos RAM que o Windows 11, mesmo sendo tecnicamente mais "robusto" em funções?
+8. Por que o Windows Server consegue rodar com menos RAM que o Windows 11, mesmo sendo tecnicamente mais robusto em funções?
 9. Qual a diferença entre configurar uma GPO em "Computer Configuration" e em "User Configuration"?
-10. Se você vincular uma GPO diretamente no domínio (em vez de numa OU específica), o que muda no alcance dela?
+10. Se eu vincular uma GPO diretamente no domínio (em vez de numa OU específica), o que muda no alcance dela?
 11. Por que o comando `gpupdate /force` é útil durante testes, mesmo sabendo que o Windows já reaplica GPOs automaticamente?
 
 ---
 
-## 8. Próximos tópicos para aprofundar (se quiser continuar evoluindo)
+## 8. Próximos tópicos que quero aprofundar
 
 - DHCP (atribuição automática de IPs)
 - Compartilhamento de arquivos e permissões NTFS
