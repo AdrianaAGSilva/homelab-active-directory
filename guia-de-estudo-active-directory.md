@@ -1,4 +1,4 @@
-# 📚 Anotações — Active Directory
+# Anotações — Active Directory
 
 Baseado no projeto homelab de Active Directory. Material de consulta rápida para revisão.
 
