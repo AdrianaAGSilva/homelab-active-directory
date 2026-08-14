@@ -42,18 +42,28 @@ Como demonstração de gestão de políticas corporativas, foi criada e vinculad
 
 A política foi validada aplicando `gpupdate /force` no cliente e confirmando, na prática, que a tela bloqueia automaticamente após o tempo configurado, exigindo a senha do usuário de domínio para desbloquear.
 
-##  Screenshots
+## Screenshots
 
+### 1. Servidor promovido a Domain Controller
+![Servidor promovido a Domain Controller](screenshots/01-dc-promovido.png)
 
-| Etapa | Screenshot |
-|---|---|
-| Servidor promovido a Domain Controller | `screenshots/01-dc-promovido.png` |
-| OUs criadas (TI, RH, Financeiro, Suporte) | `screenshots/02-ous-criadas.png` |
-| Usuários e grupo de segurança criados | `screenshots/03-usuarios-grupos.png` |
-| Cliente ingressado no domínio | `screenshots/04-cliente-no-dominio.png` |
-| Login com usuário de domínio | `screenshots/05-login-dominio.png` |
-| GPO criada e vinculada à OU Suporte | `screenshots/06-gpo-criada.png` |
-| Tela bloqueada automaticamente (GPO em ação) | `screenshots/07-gpo-funcionando.png` |
+### 2. OUs criadas (TI, RH, Financeiro, Suporte)
+![OUs criadas](screenshots/02-ous-criadas.png)
+
+### 3. Usuários e grupo de segurança criados
+![Usuários e grupo de segurança criados](screenshots/03-usuarios-grupos.png)
+
+### 4. Cliente ingressado no domínio
+![Cliente ingressado no domínio](screenshots/04-cliente-no-dominio.png)
+
+### 5. Login com usuário de domínio
+![Login com usuário de domínio](screenshots/05-login-dominio.png)
+
+### 6. GPO criada e vinculada à OU Suporte
+![GPO criada e vinculada à OU Suporte](screenshots/06-gpo-criada.png)
+
+### 7. Tela bloqueada automaticamente (GPO em ação)
+![Tela bloqueada automaticamente](screenshots/07-gpo-funcionando.png)
 
 ##  Desafios e aprendizados
 
