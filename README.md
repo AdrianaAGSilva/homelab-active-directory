@@ -45,26 +45,25 @@ A política foi validada aplicando `gpupdate /force` no cliente e confirmando, n
 ## Screenshots
 
 ### 1. Servidor promovido a Domain Controller
-![Servidor promovido a Domain Controller](screenshots/01-dc-promovido.png)
+[![Servidor promovido a Domain Controller](screenshots/01-dc-promovido.png)](screenshots/01-dc-promovido.png)
 
 ### 2. OUs criadas (TI, RH, Financeiro, Suporte)
-![OUs criadas](screenshots/02-ous-criadas.png)
+[![OUs criadas](screenshots/02-ous-criadas.png)](screenshots/02-ous-criadas.png)
 
 ### 3. Usuários e grupo de segurança criados
-![Usuários e grupo de segurança criados](screenshots/03-usuarios-grupos.png)
+[![Usuários e grupo de segurança criados](screenshots/03-usuarios-grupos.png)](screenshots/03-usuarios-grupos.png)
 
 ### 4. Cliente ingressado no domínio
-![Cliente ingressado no domínio](screenshots/04-cliente-no-dominio.png)
+[![Cliente ingressado no domínio](screenshots/04-cliente-no-dominio.png)](screenshots/04-cliente-no-dominio.png)
 
 ### 5. Login com usuário de domínio
-![Login com usuário de domínio](screenshots/05-login-dominio.png)
+[![Login com usuário de domínio](screenshots/05-login-dominio.png)](screenshots/05-login-dominio.png)
 
 ### 6. GPO criada e vinculada à OU Suporte
-![GPO criada e vinculada à OU Suporte](screenshots/06-gpo-criada.png)
+[![GPO criada e vinculada à OU Suporte](screenshots/06-gpo-criada.png)](screenshots/06-gpo-criada.png)
 
 ### 7. Tela bloqueada automaticamente (GPO em ação)
-![Tela bloqueada automaticamente](screenshots/07-gpo-funcionando.png)
-
+[![Tela bloqueada automaticamente](screenshots/07-gpo-funcionando.png)](screenshots/07-gpo-funcionando.png)
 ##  Desafios e aprendizados
 
 Documentar os perrengues faz parte do processo — foram eles que geraram o aprendizado mais real:
