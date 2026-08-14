@@ -74,7 +74,11 @@ Documentar os perrengues faz parte do processo — foram eles que geraram o apre
 - DNS Server
 - PowerShell
 
-## 🚀 Próximos passos
+## Material de estudo
+
+Este projeto tem um guia de anotações complementar, com conceitos, tabelas comparativas e perguntas de revisão sobre Active Directory: [guia-de-estudo-active-directory.md](guia-de-estudo-active-directory.md)
+
+## Próximos passos
 
 - [ ] Adicionar servidor DHCP
 - [ ] Configurar compartilhamento de arquivos entre servidor e cliente
